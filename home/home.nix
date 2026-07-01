@@ -13,6 +13,9 @@
     ghostty
     tmux
 
+    # editor
+    neovim
+
     # launcher
     wofi
 
@@ -30,6 +33,7 @@
     fzf
     unzip
     zip
+    tree
 
     # wayland tools
     wl-clipboard
@@ -54,19 +58,24 @@
     mako
   ];
 
-  # Neovim
-  programs.neovim = {
+  # Ghostty
+  xdg.configFile."ghostty/config".text = ''
+    font-family = Hack
+    theme = Gruvbox Dark
+    confirm-close-surface = false
+  '';
+
+  # Dev Shell
+  programs.direnv = {
     enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
+    nix-direnv.enable = true;
   };
-  xdg.configFile."nvim".source = ./nvim;
 
   # Tmux
   programs.tmux = {
     enable = true;
-    extraConfig = builtins.readFile ./tmux.conf;
+    shell = "${pkgs.fish}/bin/fish";
+    extraConfig = builtins.readFile ./.config/tmux.conf;
   };
 
   # Bash
@@ -80,7 +89,7 @@
     };
   };
 
-  # Fish 
+  # Fish
   programs.fish = {
     enable = true;
 
@@ -118,6 +127,12 @@
                 set_color green
                 printf " (%s)" $branch
             end
+        end
+
+        # Nix dev shell indicator
+        if set -q DIRENV_DIR
+            set_color magenta
+            printf " [develop]"
         end
 
         set_color red
@@ -172,14 +187,17 @@
   };
 
   # SSH
-  services.ssh-agent.enable = true;
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
-    matchBlocks."github.com" = {
-      hostname = "github.com";
-      user = "git";
-      identityFile = "~/.ssh/id_ed25519";
+    settings = {
+      "*" = {
+        AddKeysToAgent = "yes";
+      };
+      "github.com" = {
+        Hostname = "github.com";
+        User = "git";
+        IdentityFile = "~/.ssh/id_ed25519";
+      };
     };
   };
 
@@ -188,7 +206,10 @@
     enable = true;
     systemd.enable = false;
   };
-  xdg.configFile."hypr/hyprland.lua".source = ./hyprland.lua;
+  xdg.configFile."hypr/hyprland.lua".source = ./.config/hyprland.lua;
+  xdg.configFile."hypr/hypridle.conf".source = ./.config/hypridle.conf;
+  xdg.configFile."hypr/hyprlock.conf".source = ./.config/hyprlock.conf;
+  xdg.configFile."hypr/hyprpaper.conf".source = ./.config/hyprpaper.conf;
 
   # Waybar
   programs.waybar = {
@@ -394,6 +415,19 @@
     '';
   };
 
+  # Cursor
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+    gtk.enable = true;
+  };
+
+  # Neovim
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
+
   # Mako (notifications)
   services.mako = {
     enable = true;
@@ -406,13 +440,5 @@
       padding = "10";
       default-timeout = 5000;
     };
-  };
-
-  # Cursor
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.adwaita-icon-theme;
-    size = 24;
-    gtk.enable = true;
   };
 }

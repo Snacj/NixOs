@@ -5,7 +5,7 @@
     ./hardware-configuration.nix
   ];
 
-  # Boot 
+  # Boot
   boot.loader.grub = {
     enable = true;
     device = "/dev/nvme0n1";
@@ -13,11 +13,11 @@
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Networking 
+  # Networking
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
 
-  # Locale & Time 
+  # Locale & Time
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -32,7 +32,7 @@
     LC_TIME           = "de_DE.UTF-8";
   };
 
-  # Hyprland 
+  # Hyprland
   programs.hyprland.enable = true;
 
   # login manager
@@ -44,7 +44,7 @@
     };
   };
 
-  # Sound (PipeWire) 
+  # Sound (PipeWire)
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -55,7 +55,7 @@
   # Shell
   programs.fish.enable = true;
 
-  # User 
+  # User
   users.users.snacj = {
     isNormalUser = true;
     description = "Snacj";
@@ -63,25 +63,26 @@
     shell = pkgs.fish;
   };
 
-  # Nix settings 
+  # Nix settings
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # System packages 
+  # System packages
   environment.systemPackages = with pkgs; [
     vim
     git
     wget
   ];
 
-  # Fonts 
+  # Fonts
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.jetbrains-mono
     nerd-fonts.bigblue-terminal
+    nerd-fonts.terminess-ttf
     nerd-fonts.departure-mono
     nerd-fonts.proggy-clean-tt
-    terminus_font_ttf
+    nerd-fonts.hack
   ];
 
   # AMD GPU
