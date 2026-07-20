@@ -5,7 +5,7 @@
       "src": "https://github.com/moyiz/blink-emoji.nvim"
     },
     "blink.cmp": {
-      "rev": "b02ac65634bdb8af2dcc4eb6c807c060e1e15ae6",
+      "rev": "71dc7545c1f399c7f76eeef80efa1d8bda0ff471",
       "src": "https://github.com/saghen/blink.cmp"
     },
     "blink.lib": {
@@ -37,7 +37,7 @@
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
     "fzf-lua": {
-      "rev": "988416cc782dfe28bff3f0da9b8c943b236cd86a",
+      "rev": "532d463f5c83595192fe740572d8fd6902b2217a",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gelb.nvim": {
@@ -85,11 +85,11 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.icons": {
-      "rev": "520995f1d75da0e4cc901ee95080b1ff2bc46b94",
+      "rev": "98faae31e9be1cc054ae63485e58ceb185efcad0",
       "src": "https://github.com/nvim-mini/mini.icons"
     },
     "mini.nvim": {
-      "rev": "dc8a9918c3b1bc18a5fcd04d39b6d658074c0886",
+      "rev": "f28b0294daf3bdbacfece1f6c3c4d21a1cc33655",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "monokai.nvim": {
@@ -101,7 +101,7 @@
       "src": "https://github.com/rose-pine/neovim"
     },
     "nightfox.nvim": {
-      "rev": "26b61b1f856ec37cae3cb64f5690adb955f246a1",
+      "rev": "4dacd3f0185a2227bdf3b6c0975a8f0bf87cac9a",
       "src": "https://github.com/EdenEast/nightfox.nvim"
     },
     "nvim-dap": {
@@ -121,7 +121,7 @@
       "src": "https://github.com/brenoprata10/nvim-highlight-colors"
     },
     "nvim-lspconfig": {
-      "rev": "dd1c9b802c943278179a5d819369cda085b79d45",
+      "rev": "d6ac7a0d46555d44bf21f4f9c65f5201f818b475",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-nio": {
@@ -148,6 +148,10 @@
     "undotree": {
       "rev": "6fa6b57cda8459e1e4b2ca34df702f55242f4e4d",
       "src": "https://github.com/mbbill/undotree"
+    },
+    "vague.nvim": {
+      "rev": "161384e625e7b6cca118a3fa66225ba5cacdfb50",
+      "src": "https://github.com/vague-theme/vague.nvim"
     },
     "vim-fugitive": {
       "rev": "3b753cf8c6a4dcde6edee8827d464ba9b8c4a6f0",

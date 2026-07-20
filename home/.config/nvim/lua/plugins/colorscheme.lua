@@ -40,7 +40,11 @@ vim.pack.add({
 vim.pack.add({
 	"https://github.com/EdenEast/nightfox.nvim",
 })
+-- Vague
+vim.pack.add({
+    "https://github.com/vague-theme/vague.nvim",
+})
 
 -- === SET COLORSCHEME HERE ===
 -- vim.cmd.colorscheme("gelb")
-vim.cmd.colorscheme("gruvbox")
+vim.cmd.colorscheme("dookie")

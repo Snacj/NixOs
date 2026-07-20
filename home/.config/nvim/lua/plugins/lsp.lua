@@ -19,12 +19,17 @@ require("mason-tool-installer").setup({
 	ensure_installed = {
 		"lua_ls",
         "zls",
+        "html-lsp",
+        "css-lsp",
+        "typescript-language-server",
+        "emmet-ls",
 	},
 })
 
 -- ============================================================================
 -- SERVER SPECIFIC OVERRIDES
 -- ============================================================================
+-- LUA
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
@@ -34,12 +39,24 @@ vim.lsp.config("lua_ls", {
 		},
 	},
 })
+-- CSS
+vim.lsp.config("cssls", {})
+-- HTML + emmet
+vim.lsp.config("html", {})
+vim.lsp.config("emmet_ls", {})
+-- TYPESCRIPT
+vim.lsp.config("ts_ls", {})
+
 -- ============================================================================
 -- ENABLE SERVERS
 -- ============================================================================
 vim.lsp.enable({
 	"lua_ls",
     "zls",
+    "html",
+    "cssls",
+    "ts_ls",
+    "emmet_ls",
 })
 
 -- ============================================================================
