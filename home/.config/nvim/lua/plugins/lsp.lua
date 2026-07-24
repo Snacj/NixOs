@@ -15,6 +15,8 @@ require("mason-lspconfig").setup({
 
 vim.pack.add({ "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" })
 
+vim.pack.add({ "https://github.com/mfussenegger/nvim-jdtls" })
+
 require("mason-tool-installer").setup({
 	ensure_installed = {
 		"lua_ls",
@@ -23,6 +25,7 @@ require("mason-tool-installer").setup({
         "css-lsp",
         "typescript-language-server",
         "emmet-ls",
+        "jdtls",
 	},
 })
 
@@ -46,6 +49,63 @@ vim.lsp.config("html", {})
 vim.lsp.config("emmet_ls", {})
 -- TYPESCRIPT
 vim.lsp.config("ts_ls", {})
+-- JAVA
+vim.lsp.config("jdtls", {
+  root_markers = {
+    "settings.gradle",
+    "settings.gradle.kts",
+    "build.gradle",
+    "build.gradle.kts",
+    "gradlew",
+    ".git",
+  },
+  settings = {
+    java = {
+      import = {
+        gradle = {
+          enabled = true,
+          wrapper = {
+            enabled = true,
+          },
+        },
+      },
+      configuration = {
+        updateBuildConfiguration = "automatic",
+      },
+      eclipse = {
+        downloadSources = true,
+      },
+      maven = {
+        downloadSources = true,
+      },
+    },
+  },
+})
+-- STILL JAVA
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "java",
+  callback = function(args)
+    local root_dir = vim.fs.root(args.buf, {
+      "settings.gradle",
+      "settings.gradle.kts",
+      "gradlew",
+      ".git",
+    })
+    if not root_dir then
+      return
+    end
+
+    local project_name = vim.fn.fnamemodify(root_dir, ":p:h:t")
+    local workspace_dir = vim.fn.stdpath("cache") .. "/jdtls-workspace/" .. project_name
+
+    local cfg = vim.tbl_deep_extend("force", vim.lsp.config.jdtls or {}, {
+      cmd = { "jdtls", "-data", workspace_dir },
+      root_dir = root_dir,
+    })
+
+    require('jdtls').start_or_attach(cfg)
+  end,
+})
 
 -- ============================================================================
 -- ENABLE SERVERS

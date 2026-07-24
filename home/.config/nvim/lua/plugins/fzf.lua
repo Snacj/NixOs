@@ -12,3 +12,6 @@ vim.keymap.set("n", "<leader>fW", fzf.grep_cWORD, { desc = "[F]ind current [W]OR
 vim.keymap.set("n", "<leader>fr", fzf.resume, { desc = "Resume last search" })
 vim.keymap.set("n", "<leader>fo", fzf.oldfiles, { desc = "Old files" })
 vim.keymap.set("n", "<leader><leader>", fzf.buffers, { desc = "Buffers" })
+vim.keymap.set('n', '<leader>fc', require('fzf-lua').lsp_live_workspace_symbols, { desc = 'Search classes/symbols (live)' })
+
+vim.keymap.set('n', '<leader>fs', require('fzf-lua').lsp_document_symbols, { desc = 'Symbols in file' })

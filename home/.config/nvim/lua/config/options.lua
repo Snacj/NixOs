@@ -10,7 +10,7 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 
--- 2 spaces for JS/TS/JSX/TSX
+-- 2 spaces for JS/TS/JSX/TSX/NIX
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = {
 		"javascript",
@@ -18,6 +18,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		"typescript",
 		"typescriptreact",
 		"css",
+        "nix",
 	},
 	callback = function()
 		vim.opt_local.tabstop = 2

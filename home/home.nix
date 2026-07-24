@@ -5,8 +5,8 @@ let
   commonPackages = with pkgs; [
     # terminal
     ghostty
-    tmux
     fastfetch
+    tmux
 
     # editor
     neovim
@@ -23,14 +23,15 @@ let
     thunar
 
     # utilities
-    ripgrep
-    fd
-    fzf
-    unzip
-    zip
-    tree
     cloc
     claude-code
+    fd
+    fzf
+    htop
+    ripgrep
+    tree
+    unzip
+    zip
 
     # wayland tools
     wl-clipboard
