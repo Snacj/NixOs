@@ -1,8 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   # Hyprland compositor
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.x86_64-linux.hyprland;
+  };
 
   # Login manager
   services.greetd = {

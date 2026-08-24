@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -30,7 +31,7 @@
               home-manager.backupFileExtension = "bak";
               # hostName reaches every home module, so home config can be
               # made host-aware (see home/).
-              home-manager.extraSpecialArgs = { inherit hostName; };
+              home-manager.extraSpecialArgs = { inherit hostName inputs; };
               home-manager.users.snacj = import ./home/home.nix;
             }
           ] ++ extraModules;

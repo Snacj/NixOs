@@ -44,7 +44,11 @@ vim.pack.add({
 vim.pack.add({
     "https://github.com/vague-theme/vague.nvim",
 })
+-- Hardhat
+vim.pack.add({
+    "https://github.com/g-kirti/hardhat.nvim",
+})
 
 -- === SET COLORSCHEME HERE ===
 -- vim.cmd.colorscheme("gelb")
-vim.cmd.colorscheme("dookie")
+vim.cmd.colorscheme("industry")

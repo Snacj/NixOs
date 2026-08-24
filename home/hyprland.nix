@@ -1,10 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
+    package = inputs.hyprland.packages.x86_64-linux.hyprland;
   };
 
   xdg.configFile."hypr/hyprland.lua".source = ./.config/hyprland.lua;

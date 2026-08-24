@@ -3,8 +3,8 @@
 {
   # Ghostty
   xdg.configFile."ghostty/config".text = ''
-    font-family = Hack
-    theme = Gruvbox Light Hard
+    font-family = JetBrainsMono Nerd Font
+    theme = IBM 5153 CGA (Black)
     confirm-close-surface = false
   '';
 

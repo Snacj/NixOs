@@ -13,6 +13,7 @@ let
 
     # launcher
     wofi
+    fuzzel
 
     # browser
     firefox
@@ -23,11 +24,13 @@ let
     thunar
 
     # utilities
-    cloc
     claude-code
+    cloc
+    cloudflared
     fd
     fzf
     htop
+    localsend
     ripgrep
     tree
     unzip
@@ -89,4 +92,24 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
   };
+
+  # gpg
+    programs.gpg = {
+    enable = true;
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    pinentry.package = pkgs.pinentry-curses;
+    defaultCacheTtl = 600;
+    maxCacheTtl = 7200;
+  };
+
+  # ssh
+  programs.ssh.extraConfig = ''
+    Host homeserver
+      HostName ssh.snacj.com
+      User system
+      ProxyCommand cloudflared access ssh --hostname %h
+  '';
 }

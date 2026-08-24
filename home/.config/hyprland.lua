@@ -6,7 +6,6 @@
 hl.monitor({ output = "DP-1", mode = "1920x1080@239.76Hz", position = "auto", scale = "1" })
 hl.monitor({ output = "DP-2", mode = "preffered", position = "auto-left", scale = "1" })
 
-
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
@@ -14,8 +13,8 @@ hl.monitor({ output = "DP-2", mode = "preffered", position = "auto-left", scale 
 local mainMod     = "SUPER"
 local terminal    = "ghostty"
 local fileManager = "dolphin"
-local menu        = "wofi --show drun"
-
+-- local menu        = "wofi --show drun"
+local menu        = "fuzzel"
 
 -------------------
 ---- AUTOSTART ----
@@ -28,7 +27,6 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hypridle")
 end)
 
-
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
@@ -36,7 +34,6 @@ end)
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 hl.env("XCURSOR_SIZE",    "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-
 
 -----------------------
 ---- LOOK AND FEEL ----
@@ -47,7 +44,7 @@ hl.config({
         gaps_in  = 0,
         gaps_out = 0,
 
-        border_size = 3,
+        border_size = 2,
 
         col = {
             --active_border   = "rgba(6b9e78ff)",
@@ -63,7 +60,7 @@ hl.config({
 
     decoration = {
         rounding       = 0,
-        rounding_power = 0,
+        rounding_power = 1.0,
 
         active_opacity   = 1.0,
         inactive_opacity = 1.0,
@@ -157,7 +154,7 @@ hl.bind(mainMod .. " + V",         hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + D",         hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P",         hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + F",         hl.dsp.window.fullscreen({ mode = 1 }))
-hl.bind(mainMod .. " + L",         hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + SHIFT + L",         hl.dsp.exec_cmd("hyprlock"))
 
 -- Screenshots
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"))
