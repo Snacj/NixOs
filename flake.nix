@@ -46,8 +46,13 @@
         };
 
         # Laptop: generic GPU, no Steam, plain systemd-boot.
-        citadel = mkHost {
-          hostName = "citadel";
+        odyssey = mkHost {
+          hostName = "odysses";
+        };
+
+        # Another Laptop: generic GPU, no Steam, plain systemd-boot.
+        voyager = mkHost {
+          hostName = "voyager";
         };
       };
     };
