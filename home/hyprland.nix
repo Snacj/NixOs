@@ -4,7 +4,7 @@
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    systemd.enable = false;
+    systemd.enable = true;
     package = inputs.hyprland.packages.x86_64-linux.hyprland;
   };
 

@@ -35,6 +35,7 @@ let
     tree
     unzip
     zip
+    nwg-displays
 
     # wayland tools
     wl-clipboard
@@ -55,6 +56,7 @@ let
 
     # social
     discord
+    vesktop
   ];
 
   # Host Specific Packages
@@ -82,6 +84,7 @@ in
   home.packages = commonPackages ++ (hostPackages.${hostName} or [ ]);
 
   # Cursor
+  home.pointerCursor.enable = true;
   home.pointerCursor = {
     name = "Adwaita";
     package = pkgs.adwaita-icon-theme;

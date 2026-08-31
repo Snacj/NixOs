@@ -3,8 +3,7 @@
 ------------------
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
-hl.monitor({ output = "DP-1", mode = "1920x1080@239.76Hz", position = "auto", scale = "1" })
-hl.monitor({ output = "DP-2", mode = "preffered", position = "auto-left", scale = "1" })
+require("monitors")
 
 ---------------------
 ---- MY PROGRAMS ----
@@ -25,6 +24,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("waybar")
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("hypridle")
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
 end)
 
 -------------------------------
