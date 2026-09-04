@@ -16,7 +16,7 @@
     #   - lanzaboote / secure boot         (see boot loader below)
   ];
 
-  networking.hostName = "voyager";
+  networking.hostName = "odyssey";
 
   # Plain systemd-boot (no lanzaboote / secure boot on the laptop).
   boot.loader.systemd-boot.enable = true;
