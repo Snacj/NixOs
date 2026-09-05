@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, lib, inputs, hostName, ... }:
 
 {
   # Hyprland
@@ -23,7 +23,9 @@
         spacing = 0;
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "network" "cpu" "memory" "tray" ];
+        modules-right = [ "pulseaudio" "network" "cpu" "memory" ]
+          ++ lib.optional (hostName == "voyager") "battery"
+          ++ [ "tray" ];
 
         "hyprland/workspaces" = {
           disable-scroll = false;
@@ -69,6 +71,17 @@
         memory = {
           format = "mem {used:0.1f}/{total:0.1f} GB";
           interval = 2;
+        };
+
+        battery = {
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "bat {capacity}%";
+          format-charging = "bat {capacity}% chr";
+          format-plugged = "bat {capacity}% plg";
+          tooltip-format = "{timeTo}, {power}W";
         };
 
         network = {
@@ -178,6 +191,7 @@
       #network,
       #cpu,
       #memory,
+      #battery,
       #tray {
         padding: 0 8px;
         margin: 0;
@@ -197,6 +211,14 @@
       #cpu,
       #memory {
         color: #987654;
+      }
+
+      #battery.warning {
+        color: #D8B64A;
+      }
+
+      #battery.critical {
+        color: #9e6b6b;
       }
 
       #tray {
