@@ -24,9 +24,9 @@ let
     thunar
 
     # utilities
-    claude-code
+    bat
+    btop
     cloc
-    cloudflared
     fd
     fzf
     htop
@@ -34,6 +34,7 @@ let
     ripgrep
     tree
     unzip
+    usbutils
     zip
     nwg-displays
 

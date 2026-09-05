@@ -47,7 +47,7 @@
 
         # Laptop: generic GPU, no Steam, plain systemd-boot.
         odyssey = mkHost {
-          hostName = "odysses";
+          hostName = "odyssey";
         };
 
         # Another Laptop: generic GPU, no Steam, plain systemd-boot.
