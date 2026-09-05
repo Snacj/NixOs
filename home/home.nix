@@ -10,6 +10,18 @@ let
 
     # editor
     neovim
+    # rust toolchain for blink.cmp's native fuzzy matcher build
+    rustc
+    cargo
+    gcc
+
+    # language servers (neovim)
+    lua-language-server
+    zls
+    typescript-language-server
+    vscode-langservers-extracted # html, css
+    emmet-ls
+    jdt-language-server # jdtls
 
     # launcher
     wofi

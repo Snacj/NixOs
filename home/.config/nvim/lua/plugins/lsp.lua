@@ -1,33 +1,12 @@
 vim.pack.add({ "https://github.com/j-hui/fidget.nvim" })
 require("fidget").setup({})
 
-vim.pack.add({ "https://github.com/mason-org/mason.nvim" })
-
-require("mason").setup()
-
 vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
-
-vim.pack.add({ "https://github.com/mason-org/mason-lspconfig.nvim" })
-
-require("mason-lspconfig").setup({
-	automatic_enable = false,
-})
-
-vim.pack.add({ "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" })
 
 vim.pack.add({ "https://github.com/mfussenegger/nvim-jdtls" })
 
-require("mason-tool-installer").setup({
-	ensure_installed = {
-		"lua_ls",
-        "zls",
-        "html-lsp",
-        "css-lsp",
-        "typescript-language-server",
-        "emmet-ls",
-        "jdtls",
-	},
-})
+-- Language servers are installed via Nix (see home/home.nix) and are
+-- already on PATH, so no Mason / runtime installer is needed here.
 
 -- ============================================================================
 -- SERVER SPECIFIC OVERRIDES
