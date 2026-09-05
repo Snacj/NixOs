@@ -21,12 +21,14 @@ let
     # apps
     keepassxc
     pavucontrol
-    thunar
+    kdePackages.dolphin
 
     # utilities
     bat
     btop
+    claude-code
     cloc
+    cloudflared
     fd
     fzf
     htop
