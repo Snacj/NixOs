@@ -20,4 +20,7 @@
     pkiBundle = "/var/lib/sbctl";
   };
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # tailscale
+  services.tailscale.enable = true;
 }

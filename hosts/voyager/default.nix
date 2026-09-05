@@ -18,6 +18,9 @@
 
   networking.hostName = "voyager";
 
+  # tailscale
+  services.tailscale.enable = true;
+
   # Plain systemd-boot (no lanzaboote / secure boot on the laptop).
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
