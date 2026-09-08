@@ -15,14 +15,14 @@ let
     cargo
     gcc
 
-    # language servers (neovim)
+    # language servers
+    emmet-ls
+    jdt-language-server
     lua-language-server
-    zls
+    tree-sitter
     typescript-language-server
     vscode-langservers-extracted # html, css
-    emmet-ls
-    jdt-language-server # jdtls
-    tree-sitter
+    zls
 
     # launcher
     wofi
@@ -45,13 +45,14 @@ let
     fd
     fzf
     htop
+    lazygit
     localsend
+    nwg-displays
     ripgrep
     tree
     unzip
     usbutils
     zip
-    nwg-displays
 
     # wayland tools
     wl-clipboard
