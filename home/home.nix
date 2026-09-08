@@ -22,6 +22,7 @@ let
     vscode-langservers-extracted # html, css
     emmet-ls
     jdt-language-server # jdtls
+    tree-sitter
 
     # launcher
     wofi
@@ -78,7 +79,7 @@ let
   hostPackages = {
     oss = with pkgs; [
       prismlauncher
-      bambu-studio
+      # bambu-studio
     ];
   };
 in
@@ -86,6 +87,7 @@ in
   imports = [
     ./shell.nix
     ./hyprland.nix
+    ./quickshell.nix
     ./programs.nix
   ];
 
