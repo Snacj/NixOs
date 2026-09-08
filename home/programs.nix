@@ -2,9 +2,12 @@
 
 {
   # Ghostty
+  # other themes:
+  # theme = IBM 5153 CGA (Black)
+
   xdg.configFile."ghostty/config".text = ''
     font-family = JetBrainsMono Nerd Font
-    theme = IBM 5153 CGA (Black)
+    theme = Gruvbox Material
     confirm-close-surface = false
   '';
 

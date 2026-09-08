@@ -51,4 +51,4 @@ vim.pack.add({
 
 -- === SET COLORSCHEME HERE ===
 -- vim.cmd.colorscheme("gelb")
-vim.cmd.colorscheme("industry")
+vim.cmd.colorscheme("gruvbox")
