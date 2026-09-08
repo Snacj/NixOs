@@ -41,6 +41,29 @@ local function define(name, opts)
     return opts
 end
 
+-- ---------------------------------------------------------------- shell ----
+
+-- Path to the shell for the plain terminal float; nil resolves it per call.
+M.shell = nil
+
+-- `nix develop` (and nix-direnv) export SHELL=/nix/store/...-bash/bin/bash --
+-- plain pkgs.bash, built without readline -- and neovim takes 'shell' from
+-- $SHELL. A float started from that has no line editing, history or completion.
+-- Inside a nix dev environment use the login shell instead; the dev environment
+-- itself is inherited through the process env either way.
+local function shell_cmd()
+    if M.shell then
+        return M.shell
+    end
+    if vim.env.IN_NIX_SHELL or vim.env.IN_NIX_DEVELOP then
+        local ok, passwd = pcall(vim.uv.os_get_passwd)
+        if ok and passwd and passwd.shell and vim.fn.executable(passwd.shell) == 1 then
+            return passwd.shell
+        end
+    end
+    return vim.o.shell
+end
+
 local function is_open(t)
     return t.win ~= nil and vim.api.nvim_win_is_valid(t.win)
 end
@@ -123,12 +146,16 @@ local function start(t)
     local cmd = type(t.cmd) == "function" and t.cmd() or t.cmd
     local cwd = type(t.cwd) == "function" and t.cwd() or t.cwd
 
+    -- a list is exec'd as-is; a string goes through 'shell', which is what the
+    -- command templates in M.runners expect
+    cmd = cmd or { shell_cmd() }
+
     -- set before jobstart: TermOpen fires while the job is being created
     vim.b[t.buf].floaterm = t.name
 
     vim.api.nvim_buf_call(t.buf, function()
         local job
-        job = vim.fn.jobstart(cmd or vim.o.shell, {
+        job = vim.fn.jobstart(cmd, {
             term = true,
             cwd = cwd and vim.fn.isdirectory(cwd) == 1 and cwd or nil,
             on_exit = function(id, code)
@@ -139,7 +166,8 @@ local function start(t)
     end)
 
     if not t.job then
-        vim.notify(("floaterminal: could not start %s"):format(cmd or vim.o.shell), vim.log.levels.ERROR)
+        local what = type(cmd) == "table" and table.concat(cmd, " ") or cmd
+        vim.notify(("floaterminal: could not start %s"):format(what), vim.log.levels.ERROR)
         return false
     end
 
