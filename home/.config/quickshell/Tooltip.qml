@@ -1,8 +1,8 @@
 import Quickshell
 import QtQuick
 
-// Popup shown above a bar module while it is hovered, styled like the old
-// GTK waybar tooltip.
+// Hover hint above a bar item. Kept for read-only detail; anything you can act
+// on gets a Popup instead.
 PopupWindow {
     id: root
 
@@ -14,18 +14,19 @@ PopupWindow {
         item: root.target
         edges: Edges.Top
         gravity: Edges.Top
-        margins.bottom: 4
+        margins.bottom: Theme.popupGap
+        adjustment: PopupAdjustment.SlideX
     }
 
-    implicitWidth: body.implicitWidth + 18
+    implicitWidth: body.implicitWidth + 20
     implicitHeight: body.implicitHeight + 12
     color: "transparent"
     visible: root.active
 
     Rectangle {
         anchors.fill: parent
-        color: Theme.tooltipBackground
-        border.color: Theme.border
+        color: Theme.popup
+        border.color: Theme.borderStrong
         border.width: 1
 
         Item {

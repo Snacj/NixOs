@@ -2,9 +2,9 @@ import Quickshell
 import Quickshell.Hyprland
 import QtQuick
 
-// Persistent workspaces 1-9, all outputs, like the waybar hyprland/workspaces
-// module: dim when they hold no windows, accent when occupied, underlined when
-// focused.
+// Persistent workspaces 1-9. Three states rather than the two waybar showed:
+// empty, holding windows, and focused — so a glance tells you both where you
+// are and where there is something to go back to.
 Row {
     id: root
 
@@ -30,12 +30,21 @@ Row {
             }
             readonly property bool focused: root.monitor?.activeWorkspace?.id === button.workspaceId
 
-            implicitWidth: label.implicitWidth + 8
+            implicitWidth: Theme.barHeight
             height: Theme.barHeight
             hoverEnabled: true
 
             onClicked: Hyprland.dispatch("hl.dsp.focus({ workspace = " + button.workspaceId + " })")
             onWheel: event => Hyprland.dispatch("hl.dsp.focus({ workspace = \"e" + (event.angleDelta.y > 0 ? "-1" : "+1") + "\" })")
+
+            Rectangle {
+                anchors.fill: parent
+                color: button.containsMouse ? Theme.surface : "transparent"
+
+                Behavior on color {
+                    ColorAnimation { duration: Theme.durNormal }
+                }
+            }
 
             Text {
                 id: label
@@ -43,20 +52,36 @@ Row {
                 text: button.workspaceId
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.fontSize
-                color: button.occupied || button.focused ? Theme.accent
+                color: button.focused ? Theme.accent
+                     : button.occupied ? Theme.module
                      : button.containsMouse ? Theme.dimHover
                      : Theme.dim
 
                 Behavior on color {
-                    ColorAnimation { duration: 150 }
+                    ColorAnimation { duration: Theme.durNormal }
                 }
             }
 
+            // Empty workspaces get nothing; occupied ones get a small mark so
+            // they read as populated even at a distance.
             Rectangle {
-                anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
-                height: 2
+                anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 3 }
+                width: 3
+                height: 3
+                color: Theme.module
+                visible: button.occupied && !button.focused
+            }
+
+            // On the top edge, matching the modules on the right.
+            Rectangle {
+                anchors { left: parent.left; right: parent.right; top: parent.top }
+                height: Theme.indicatorHeight
                 color: Theme.accent
-                visible: button.focused
+                opacity: button.focused ? 1 : 0
+
+                Behavior on opacity {
+                    NumberAnimation { duration: Theme.durNormal }
+                }
             }
         }
     }

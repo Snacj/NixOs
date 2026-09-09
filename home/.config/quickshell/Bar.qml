@@ -1,9 +1,13 @@
 import Quickshell
-import Quickshell.Io
 import Quickshell.Hyprland
-import Quickshell.Services.Pipewire
 import QtQuick
 
+// Bottom bar, one instance per monitor.
+//
+// Layout is three groups: workspaces on the left, clock in the centre, and
+// system state on the right. The right-hand group is separated by hairlines
+// into audio / network / resources / notifications / tray, so related readings
+// sit together instead of running into one strip of text.
 PanelWindow {
     id: bar
 
@@ -19,15 +23,10 @@ PanelWindow {
         bottom: true
     }
 
-    readonly property PwNode sink: Pipewire.defaultAudioSink
-
-    PwObjectTracker {
-        objects: [bar.sink]
-    }
-
-    Process {
-        id: mixer
-        command: ["pavucontrol"]
+    // Clicking empty bar space dismisses whichever panel is open.
+    MouseArea {
+        anchors.fill: parent
+        onClicked: PopupManager.closeAll()
     }
 
     Rectangle {
@@ -38,56 +37,45 @@ PanelWindow {
 
     Workspaces {
         monitor: Hyprland.monitorFor(bar.screen)
-        anchors { left: parent.left; leftMargin: 6; verticalCenter: parent.verticalCenter }
+        anchors { left: parent.left; verticalCenter: parent.verticalCenter }
     }
 
     Clock {
+        barWindow: bar
         anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
     }
 
     Row {
-        anchors { right: parent.right; rightMargin: 6; verticalCenter: parent.verticalCenter }
+        anchors { right: parent.right; verticalCenter: parent.verticalCenter }
         spacing: 0
 
-        // pulseaudio
-        BarModule {
-            readonly property real volume: bar.sink?.audio?.volume ?? 0
-            readonly property bool muted: bar.sink?.audio?.muted ?? false
-
-            text: muted ? "muted" : "vol " + Math.round(volume * 100) + "%"
-            textColor: muted ? Theme.dim : Theme.module
-            hoverColor: Theme.accent
-            tooltipText: bar.sink?.description ?? ""
-
-            onClicked: mixer.running = true
-            onWheel: event => {
-                if (!bar.sink?.audio)
-                    return;
-                const step = event.angleDelta.y > 0 ? 0.05 : -0.05;
-                bar.sink.audio.volume = Math.max(0, Math.min(1, bar.sink.audio.volume + step));
-            }
+        Audio {
+            barWindow: bar
         }
 
-        // network
-        BarModule {
-            text: SysInfo.networkText
-            textColor: SysInfo.networkConnected ? Theme.module : Theme.dim
-            hoverColor: Theme.accent
-            tooltipText: SysInfo.networkTooltip
+        Divider {}
+
+        Network {
+            barWindow: bar
         }
 
-        // cpu
+        Divider {}
+
         BarModule {
             text: "cpu " + SysInfo.cpuUsage + "%"
+            textColor: SysInfo.cpuUsage >= 90 ? Theme.critical : Theme.module
+            tooltipText: SysInfo.cpuUsage + "% across all cores"
         }
 
-        // memory
         BarModule {
+            readonly property real fraction: SysInfo.memUsed / Math.max(SysInfo.memTotal, 1)
+
             text: "mem " + SysInfo.memUsed.toFixed(1) + "/" + SysInfo.memTotal.toFixed(1) + " GB"
-            tooltipText: Math.round(100 * SysInfo.memUsed / Math.max(SysInfo.memTotal, 1)) + "%"
+            textColor: fraction >= 0.9 ? Theme.critical : Theme.module
+            tooltipText: Math.round(100 * fraction) + "% used"
         }
 
-        // battery, on machines that have one
+        // Battery, on machines that have one.
         BarModule {
             readonly property bool charging: SysInfo.batteryStatus === "Charging"
             readonly property bool plugged: SysInfo.batteryStatus === "Full"
@@ -111,8 +99,19 @@ PanelWindow {
             }
         }
 
+        Divider {}
+
+        NotificationCenter {
+            barWindow: bar
+        }
+
+        Divider {
+            visible: tray.visible
+        }
+
         Tray {
-            bar: bar
+            id: tray
+            barWindow: bar
         }
     }
 }

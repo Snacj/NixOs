@@ -4,8 +4,11 @@ import Quickshell
 import Quickshell.Io
 import QtQuick
 
-// CPU / memory from /proc, network state from nmcli. Quickshell has no
-// built-in service for either, so both are polled by a short shell command.
+// CPU, memory and battery. Quickshell has no service for any of these, so they
+// are read straight from /proc and sysfs on a timer.
+//
+// Network state used to live here too; it now comes from Quickshell.Networking,
+// which is event driven and needs no polling at all.
 Singleton {
     id: root
 
@@ -18,10 +21,6 @@ Singleton {
     property string batteryStatus: "Unknown"
     property real batteryWatts: 0
     property real batterySecondsLeft: 0
-
-    property string networkText: "offline"
-    property string networkTooltip: "disconnected"
-    property bool networkConnected: false
 
     property real lastCpuTotal: 0
     property real lastCpuIdle: 0
@@ -56,58 +55,6 @@ Singleton {
         }
 
         root.memUsed = Math.max(0, root.memTotal - memAvail);
-    }
-
-    // nmcli -t escapes literal colons as "\:", so split on unescaped ones only.
-    function splitFields(line) {
-        const fields = [];
-        let current = "";
-        for (let i = 0; i < line.length; i++) {
-            const c = line[i];
-            if (c === "\\" && line[i + 1] === ":") {
-                current += ":";
-                i++;
-            } else if (c === ":") {
-                fields.push(current);
-                current = "";
-            } else {
-                current += c;
-            }
-        }
-        fields.push(current);
-        return fields;
-    }
-
-    function parseNetwork(text) {
-        const blocks = text.split("@@");
-        const devices = blocks[0].trim().split("\n");
-        let wifi = null;
-        let ethernet = false;
-
-        for (let i = 0; i < devices.length; i++) {
-            const f = splitFields(devices[i]);
-            if (f.length < 3 || f[1] !== "connected")
-                continue;
-            if (f[0] === "wifi" && wifi === null)
-                wifi = f[2];
-            else if (f[0] === "ethernet")
-                ethernet = true;
-        }
-
-        if (wifi !== null) {
-            const signal = blocks.length > 1 ? blocks[1].trim() : "";
-            root.networkText = wifi;
-            root.networkTooltip = signal !== "" ? wifi + "\n" + signal + "%" : wifi;
-            root.networkConnected = true;
-        } else if (ethernet) {
-            root.networkText = "eth";
-            root.networkTooltip = "ethernet";
-            root.networkConnected = true;
-        } else {
-            root.networkText = "offline";
-            root.networkTooltip = "disconnected";
-            root.networkConnected = false;
-        }
     }
 
     // Battery straight from sysfs, as waybar did; UPower is not running
@@ -151,28 +98,12 @@ Singleton {
         }
     }
 
-    Process {
-        id: networkReader
-        command: ["sh", "-c", "nmcli -t -f TYPE,STATE,CONNECTION device status; echo @@; nmcli -t -f IN-USE,SIGNAL device wifi list --rescan no 2>/dev/null | sed -n 's/^\\*://p'"]
-        stdout: StdioCollector {
-            onStreamFinished: root.parseNetwork(this.text)
-        }
-    }
-
     Timer {
         interval: 2000
         running: true
         repeat: true
         triggeredOnStart: true
         onTriggered: procReader.running = true
-    }
-
-    Timer {
-        interval: 5000
-        running: true
-        repeat: true
-        triggeredOnStart: true
-        onTriggered: networkReader.running = true
     }
 
     Process {
