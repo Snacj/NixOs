@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  # PipeWire
+  # pipewire
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -9,6 +9,6 @@
     pulse.enable = true;
   };
 
-  # Real-time scheduling for low-latency audio
+  # real-time scheduling for low-latency audio
   security.rtkit.enable = true;
 }

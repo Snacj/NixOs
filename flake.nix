@@ -16,7 +16,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, lanzaboote, ... }@inputs:
+  outputs = { nixpkgs, home-manager, lanzaboote, ... }@inputs:
     let
       mkHost = { hostName, extraModules ? [ ] }:
         nixpkgs.lib.nixosSystem {
@@ -29,8 +29,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "bak";
-              # hostName reaches every home module, so home config can be
-              # made host-aware (see home/).
+              # hostName reaches every home module
               home-manager.extraSpecialArgs = { inherit hostName inputs; };
               home-manager.users.snacj = import ./home/home.nix;
             }
@@ -39,21 +38,19 @@
     in
     {
       nixosConfigurations = {
-        # Desktop: AMD GPU, Steam, secure boot.
+        # desktop: amd gpu, steam, secure boot
         oss = mkHost {
           hostName = "oss";
           extraModules = [ lanzaboote.nixosModules.lanzaboote ];
         };
 
-        # Laptop: generic GPU, no Steam, plain systemd-boot.
-        odyssey = mkHost {
-          hostName = "odyssey";
-        };
-
-        # Another Laptop: generic GPU, no Steam, plain systemd-boot.
+        # framework laptop: intel gpu, no steam, systemd-boot
         voyager = mkHost {
           hostName = "voyager";
         };
       };
+
+      # nix fmt
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
     };
 }

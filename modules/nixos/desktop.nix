@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 
 {
-  # Hyprland compositor
+  # hyprland
   programs.hyprland = {
     enable = true;
     package = inputs.hyprland.packages.x86_64-linux.hyprland;
@@ -13,9 +13,15 @@
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
     ];
+    # pin the backend instead of letting the portal guess
+    config.common.default = [ "hyprland" "gtk" ];
   };
 
-  # Login manager
+  # removable media, otherwise dolphin cannot mount
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
+
+  # login manager
   services.greetd = {
     enable = true;
     settings.default_session = {

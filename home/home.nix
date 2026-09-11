@@ -1,7 +1,7 @@
 { config, pkgs, lib, hostName, ... }:
 
 let
-  # Common Packages each Host shares
+  # shared by every host
   commonPackages = with pkgs; [
     # terminal
     ghostty
@@ -10,7 +10,7 @@ let
 
     # editor
     neovim
-    # rust toolchain for blink.cmp's native fuzzy matcher build
+    # rust toolchain for blink.cmp fuzzy matcher
     rustc
     cargo
     gcc
@@ -44,6 +44,7 @@ let
     cloudflared
     fd
     fzf
+    glow
     htop
     lazygit
     localsend
@@ -76,7 +77,7 @@ let
     vesktop
   ];
 
-  # Host Specific Packages
+  # host specific
   hostPackages = {
     oss = with pkgs; [
       prismlauncher
@@ -98,12 +99,12 @@ in
 
   programs.home-manager.enable = true;
 
-  # Packages: shared base + whatever this host opts into.
+  # shared base + host opt-ins
   home.packages = commonPackages ++ (hostPackages.${hostName} or [ ]);
 
-  # Cursor
-  home.pointerCursor.enable = true;
+  # cursor
   home.pointerCursor = {
+    enable = true;
     name = "Adwaita";
     package = pkgs.adwaita-icon-theme;
     size = 24;
@@ -115,9 +116,7 @@ in
   };
 
   # gpg
-    programs.gpg = {
-    enable = true;
-  };
+  programs.gpg.enable = true;
 
   services.gpg-agent = {
     enable = true;
@@ -125,12 +124,4 @@ in
     defaultCacheTtl = 600;
     maxCacheTtl = 7200;
   };
-
-  # ssh
-  programs.ssh.extraConfig = ''
-    Host homeserver
-      HostName ssh.snacj.com
-      User system
-      ProxyCommand cloudflared access ssh --hostname %h
-  '';
 }

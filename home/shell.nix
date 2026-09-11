@@ -1,11 +1,11 @@
 { config, pkgs, hostName, ... }:
 
 {
-  # Fish
+  # fish
   programs.fish = {
     enable = true;
 
-    # Abbreviations
+    # abbreviations
     shellAbbrs = {
       v       = "nvim";
       notes   = "nvim ~/Notes";
@@ -45,7 +45,7 @@
             end
         end
 
-        # Nix dev shell indicator
+        # nix dev shell indicator
         if set -q IN_NIX_SHELL; or set -q DIRENV_DIR
             set_color magenta
             printf " [develop]"
@@ -82,13 +82,13 @@
     '';
   };
 
-  # Zoxide
+  # zoxide
   programs.zoxide = {
     enable = true;
     enableFishIntegration = true;
   };
 
-  # Direnv
+  # direnv
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;

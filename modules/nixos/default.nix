@@ -1,8 +1,7 @@
 { ... }:
 
 {
-  # Modules shared by every host. Hardware-, GPU- and role-specific
-  # modules (gaming, gpu/*, secure boot, ...) are imported per host.
+  # shared by every host; role-specific modules are imported per host
   imports = [
     ./core.nix
     ./desktop.nix

@@ -1,11 +1,7 @@
 { ... }:
 
 {
-  # Vendor-agnostic graphics: enough for a Wayland compositor to run.
-  # Replace this with a vendor module (./amd.nix, ./intel.nix, ...) once
-  # the machine's GPU is known, to pull in the right drivers / VA-API.
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  # vendor-agnostic fallback; swap for amd.nix or intel.nix once the gpu is known
+  # no enable32Bit here, that is only needed for steam
+  hardware.graphics.enable = true;
 }

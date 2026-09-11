@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  # Steam + gamescope session
+  # steam + gamescope session
   programs.steam = {
     enable = true;
     gamescopeSession.enable = true;

@@ -1,24 +1,28 @@
 { config, pkgs, ... }:
 
+let
+  repo = "${config.home.homeDirectory}/nixos-config";
+in
 {
-  # Ghostty
-  # other themes:
-  # theme = IBM 5153 CGA (Black)
-
+  # ghostty; other themes: IBM 5153 CGA (Black)
   xdg.configFile."ghostty/config".text = ''
     font-family = JetBrainsMono Nerd Font
     theme = Gruvbox Material
     confirm-close-surface = false
   '';
 
-  # Tmux
+  # nvim, out-of-store so a keymap change needs no rebuild
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${repo}/home/.config/nvim";
+
+  # tmux
   programs.tmux = {
     enable = true;
     shell = "${pkgs.fish}/bin/fish";
     extraConfig = builtins.readFile ./.config/tmux.conf;
   };
 
-  # Git
+  # git
   programs.git = {
     enable = true;
     settings = {
@@ -28,7 +32,7 @@
     };
   };
 
-  # SSH
+  # ssh; block order matters with enableDefaultConfig off, so keep them together
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
@@ -41,14 +45,15 @@
         User = "git";
         IdentityFile = "~/.ssh/id_ed25519";
       };
+      "homeserver" = {
+        Hostname = "ssh.snacj.com";
+        User = "system";
+        ProxyCommand = "${pkgs.cloudflared}/bin/cloudflared access ssh --hostname %h";
+      };
     };
   };
 
-  # Mako (notifications).
-  #
-  # Disabled: the Quickshell bar now serves as the notification daemon, and two
-  # daemons cannot both own org.freedesktop.Notifications. Kept here rather than
-  # deleted so it can be switched back on if Quickshell is ever swapped out.
+  # mako, off because quickshell owns org.freedesktop.Notifications
   services.mako = {
     enable = false;
     settings = {

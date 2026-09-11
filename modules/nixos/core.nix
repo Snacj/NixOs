@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  # Latest kernel on every host.
+  # kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Networking (per-host hostname is set in hosts/<name>/default.nix).
+  # networking (hostname is set per host)
   networking.networkmanager.enable = true;
 
-  # Locale & time
+  # locale & time
   time.timeZone = "Europe/Berlin";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
@@ -22,10 +22,10 @@
     LC_TIME           = "de_DE.UTF-8";
   };
 
-  # Shell
+  # shell
   programs.fish.enable = true;
 
-  # User
+  # user
   users.users.snacj = {
     isNormalUser = true;
     description = "Snacj";
@@ -33,36 +33,35 @@
     shell = pkgs.fish;
   };
 
-  # Nix settings
+  # nix
   nixpkgs.config.allowUnfree = true;
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    auto-optimise-store = true;
+
+    # the hyprland input does not follow nixpkgs, so it is not in cache.nixos.org
+    substituters = [ "https://hyprland.cachix.org" ];
+    trusted-public-keys = [
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIITfGmveHsOO8NCF3q+j4="
+    ];
   };
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 14d";
   };
+  # dedupe on a timer instead of during every build
+  nix.optimise.automatic = true;
 
-  # System packages
+  # system packages
   environment.systemPackages = with pkgs; [
     vim
     git
     wget
   ];
 
-  # Fonts
+  # jetbrainsmono for ghostty, bigblueterm for hyprlock and quickshell
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.bigblue-terminal
-    nerd-fonts.terminess-ttf
-    nerd-fonts.departure-mono
-    nerd-fonts.proggy-clean-tt
-    nerd-fonts.hack
   ];
-
-  # Shared across all current hosts; bump per-host if a machine is
-  # installed against a newer release.
-  system.stateVersion = "26.05";
 }

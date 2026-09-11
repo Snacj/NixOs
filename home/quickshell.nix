@@ -1,18 +1,13 @@
 { config, pkgs, lib, ... }:
 
+let
+  repo = "${config.home.homeDirectory}/nixos-config";
+in
 {
-  # Quickshell: bar, on-screen display and notification daemon.
-  #
-  # Replaces waybar (old config in waybar.nix.bak) and mako (disabled in
-  # programs.nix, since two daemons cannot both own
-  # org.freedesktop.Notifications).
-  #
-  # Runtime dependencies, all already in home.nix: brightnessctl for the
-  # brightness OSD, pavucontrol for the audio panel's escape hatch.
+  # bar, osd and notification daemon; replaces waybar and mako
   home.packages = [ pkgs.quickshell ];
 
-  xdg.configFile."quickshell" = {
-    source = ./.config/quickshell;
-    recursive = true;
-  };
+  # out-of-store so a widget tweak is qs reload instead of a rebuild
+  xdg.configFile."quickshell".source =
+    config.lib.file.mkOutOfStoreSymlink "${repo}/home/.config/quickshell";
 }

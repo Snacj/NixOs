@@ -2,17 +2,16 @@
 
 {
   imports = [
-    ../../modules/nixos            # shared base (core, desktop, audio)
+    ../../modules/nixos
     ./hardware-configuration.nix
 
     ../../modules/nixos/gpu/amd.nix
-    ../../modules/nixos/gaming.nix # Steam + gamemode (desktop only)
+    ../../modules/nixos/gaming.nix
   ];
 
   networking.hostName = "oss";
 
-  # Secure boot via lanzaboote (the lanzaboote module is wired in for
-  # this host from flake.nix).
+  # secure boot, the lanzaboote module is wired in from flake.nix
   boot.loader.grub.enable = false;
   boot.loader.systemd-boot.enable = false;
   boot.lanzaboote = {
@@ -23,4 +22,7 @@
 
   # tailscale
   services.tailscale.enable = true;
+
+  # release this host was installed against, do not bump
+  system.stateVersion = "26.05";
 }
