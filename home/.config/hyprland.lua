@@ -25,6 +25,7 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("systemctl --user start hyprland-session.target")
+    hl.exec_cmd("wayscriber --daemon")
 end)
 
 -------------------------------
@@ -161,6 +162,7 @@ hl.bind(mainMod .. " + SHIFT + L",         hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/screenshot_$(date +'%Y-%m-%d_%H-%M-%S').png"))
 hl.bind(mainMod .. " + S",         hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("pkill -SIGUSR1 wayscriber"))
 
 -- Colorpick
 hl.bind(mainMod .. " + C",         hl.dsp.exec_cmd("hyprpicker"))

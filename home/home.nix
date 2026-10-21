@@ -35,6 +35,7 @@ let
     keepassxc
     pavucontrol
     kdePackages.dolphin
+    obsidian
 
     # utilities
     bat
@@ -55,6 +56,7 @@ let
     zip
 
     # wayland tools
+    wayscriber
     wl-clipboard
     grim
     slurp
@@ -80,7 +82,10 @@ let
   hostPackages = {
     oss = with pkgs; [
       prismlauncher
-      # bambu-studio
+      hytale-launcher
+      podman
+      podman-compose
+      bambu-studio
     ];
   };
 in

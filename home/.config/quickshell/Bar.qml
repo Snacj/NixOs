@@ -17,6 +17,14 @@ PanelWindow {
     color: Theme.background
     implicitHeight: Theme.barHeight
 
+    // Bottom layer rather than top. The exclusive zone still keeps windows out
+    // of the bar, so nothing covers it in normal use, but windows that place
+    // themselves over the reserved strip anyway — Steam's "now playing" toasts,
+    // and anything else going fullscreen — draw above the bar instead of
+    // disappearing behind it. The bar's own panels are xdg popups, which Hyprland
+    // still renders above windows, so they are unaffected.
+    aboveWindows: false
+
     anchors {
         left: true
         right: true

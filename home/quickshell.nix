@@ -15,4 +15,11 @@
     source = ./.config/quickshell;
     recursive = true;
   };
+
+  # The nixpkgs wayscriber package installs a binary and nothing else, but its
+  # tray item advertises IconName "wayscriber", so the lookup misses every
+  # theme and the bar draws Qt's missing-image placeholder. Filling the gap in
+  # hicolor fixes it for any tray host, not just this bar.
+  xdg.dataFile."icons/hicolor/scalable/apps/wayscriber.svg".source =
+    ./icons/wayscriber.svg;
 }
