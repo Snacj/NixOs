@@ -21,7 +21,8 @@ local menu        = "fuzzel"
 
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 hl.on("hyprland.start", function()
-    hl.exec_cmd("quickshell")
+    -- DankMaterialShell is a user unit (see home/dms.nix), pulled in by the
+    -- hyprland-session.target start below, so it is not launched from here.
     hl.exec_cmd("hyprpaper")
     hl.exec_cmd("hypridle")
     hl.exec_cmd("systemctl --user start hyprland-session.target")
@@ -197,16 +198,16 @@ hl.bind(mainMod .. " + SHIFT + J", function() hl.dispatch(hl.dsp.exec_cmd("hyprc
 
 -- Volume & brightness.
 --
--- Volume changes are picked up by the Quickshell OSD straight from Pipewire, so
--- those binds are unchanged. Brightness has no such signal, so the bind tells
--- the shell to look after changing the level. brightnessctl still runs first, so
--- the keys keep working if the shell is not running.
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),       { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),    { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+ ; qs ipc call osd brightness"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%- ; qs ipc call osd brightness"), { locked = true, repeating = true })
+-- Routed through DMS rather than wpctl/brightnessctl: DMS owns the level (so it
+-- honours its own max-volume setting and per-monitor brightness device) and
+-- showing its OSD is then a side effect, with no second "tell the shell to look"
+-- call to keep in sync.
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("dms ipc call audio increment 5"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("dms ipc call audio decrement 5"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("dms ipc call audio mute"),        { locked = true, repeating = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("dms ipc call audio micmute"),     { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("dms ipc call brightness increment 5"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("dms ipc call brightness decrement 5"), { locked = true, repeating = true })
 
 -- Media keys
 hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),        { locked = true })

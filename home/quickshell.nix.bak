@@ -1,3 +1,11 @@
+# Backup of the hand-written Quickshell bar, replaced by DankMaterialShell in
+# home/dms.nix. The QML it points at is still in home/.config/quickshell.
+#
+# To restore: rename this file to quickshell.nix, swap ./dms.nix for
+# ./quickshell.nix in the imports in home/home.nix, and undo the DMS autostart
+# and volume/brightness binds in home/.config/hyprland.lua (see the comments
+# there).
+
 { config, pkgs, lib, ... }:
 
 {

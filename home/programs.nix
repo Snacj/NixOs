@@ -43,22 +43,4 @@
       };
     };
   };
-
-  # Mako (notifications).
-  #
-  # Disabled: the Quickshell bar now serves as the notification daemon, and two
-  # daemons cannot both own org.freedesktop.Notifications. Kept here rather than
-  # deleted so it can be switched back on if Quickshell is ever swapped out.
-  services.mako = {
-    enable = false;
-    settings = {
-      font = "JetBrainsMono Nerd Font 10";
-      background-color = "#282828";
-      text-color = "#ebdbb2";
-      border-color = "#458588";
-      border-radius = 4;
-      padding = "10";
-      default-timeout = 5000;
-    };
-  };
 }

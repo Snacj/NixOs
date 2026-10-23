@@ -82,7 +82,6 @@ let
   hostPackages = {
     oss = with pkgs; [
       prismlauncher
-      hytale-launcher
       podman
       podman-compose
       bambu-studio
@@ -93,7 +92,7 @@ in
   imports = [
     ./shell.nix
     ./hyprland.nix
-    ./quickshell.nix
+    ./dms.nix
     ./programs.nix
   ];
 
